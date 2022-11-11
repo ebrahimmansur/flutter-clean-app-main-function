@@ -23,7 +23,7 @@ abstract class AppHost {
 ///Builds and runs the pre-configurations before the runapp() function.
 abstract class IAppHostConfigurationBuilder {
   IAppHostConfigurationBuilder._();
-  Future<void> run();
+  FutureOr<void> run();
 }
 
 class _AppBuilder {
