@@ -2,6 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 
+///Builds The Application
+abstract class AppHost {
+  AppHost._();
+
+  static Future<void> lunch({
+    required Widget app,
+    required List<IAppHostConfigurationBuilder> configurations,
+  }) async {
+    final appBuilder = _AppBuilder.instance();
+    appBuilder.addApp(app);
+    for (var config in configurations) {
+      appBuilder.addConfig(config);
+    }
+
+    await appBuilder.build();
+  }
+}
+
 ///Builds and runs the pre-configurations before the runapp() function.
 abstract class IAppHostConfigurationBuilder {
   IAppHostConfigurationBuilder._();
