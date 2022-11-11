@@ -1,7 +1,7 @@
 import 'dart:async';
 
+///Builds and runs the pre-configurations before the runapp() function.
 abstract class IAppHostConfigurationBuilder {
-  ///Builds and runs the pre-configurations before the runapp() function.
   IAppHostConfigurationBuilder._();
   Future<void> run();
 }
