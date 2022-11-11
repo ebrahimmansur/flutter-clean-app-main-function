@@ -1,4 +1,4 @@
-import 'package:demo_app/src/app/app_host.dart';
+import 'src/host/app_host.dart';
 
 import 'src/demo_app.dart';
 
