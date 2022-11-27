@@ -1,56 +1,22 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 
-///Builds The Application
-abstract class AppHost {
-  AppHost._();
+///Builds and lunches the Application.
+abstract class AppLuncher {
+  const AppLuncher._();
 
-  static Future<void> lunch({
+  static Future<void> run({
     required Widget app,
-    required List<IAppHostConfigurationBuilder> configurations,
+    List<IAppPreConfigurationRunner> runners = const [],
   }) async {
-    final appBuilder = _AppBuilder.instance();
-    appBuilder.addApp(app);
-    for (var config in configurations) {
-      appBuilder.addConfig(config);
-    }
-
-    await appBuilder.build();
+    await Future.forEach<IAppPreConfigurationRunner>(
+        runners, (element) async => await element.run());
+    runApp(app);
   }
 }
 
-///Builds and runs the pre-configurations before the runapp() function.
-abstract class IAppHostConfigurationBuilder {
-  IAppHostConfigurationBuilder._();
-  FutureOr<void> run();
-}
-
-class _AppBuilder {
-  Widget? _app;
-  final List<IAppHostConfigurationBuilder> _configurations = [];
-  static _AppBuilder? _instance;
-  _AppBuilder._();
-
-  factory _AppBuilder.instance() {
-    if (_instance == null) {
-      _instance = _AppBuilder._();
-      return _instance!;
-    }
-
-    return _instance!;
-  }
-
-  void addApp(Widget app) => _app = app;
-  void addConfig(IAppHostConfigurationBuilder config) =>
-      _configurations.add(config);
-
-  Future<void> build() async {
-    await Future.forEach<IAppHostConfigurationBuilder>(_configurations,
-        (item) async {
-      await item.run();
-    });
-
-    runApp(_app!);
-  }
+///Runs the pre-configurations before the runapp() function.
+abstract class IAppPreConfigurationRunner {
+  const IAppPreConfigurationRunner._();
+  FutureOr run();
 }
